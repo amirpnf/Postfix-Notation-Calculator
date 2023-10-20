@@ -5,7 +5,6 @@
 #include <readline/history.h>
 #include <stdbool.h>
 #include "stack.h"
-#include "readline.h"
 
 
 
@@ -18,8 +17,13 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Stack allocation failed \n");
         exit(1);
     }
+    input = (char*)malloc(sizeof(char) * 64);
+    if(!input) {
+        fprintf(stderr, "input allocation failed \n");
+        exit(-1);
+    }
     initialize_Stack(stack);
     while(input) {
-        
+        input = readline(">  ");
     }
 }

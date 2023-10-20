@@ -1,12 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <stdbool.h>
 #include <math.h>
-#include "stack.h"
-#include "operations.h"
+
+#define MAX_SIZE 64
+
+typedef struct stack {
+    int* data;
+    int top;
+    int size;
+} Stack;
+
+typedef enum {
+    ADDITION,
+    SUBTRACTION,
+    TIMES,
+    DIVIDED_BY,
+    REMAINDER,
+    FACTORIAL,
+    POWER,
+} OPERATION;
+
+typedef enum {
+    QUIT,
+    PRINT,
+    CLEAR,
+    ALL,
+    REVERSE,
+    NONE,
+    FINISH,
+} Response;
+
+int options(char* input) {
+    if(input) {
+        if(strcmp(input, "p\0") == 0) {
+            return PRINT;
+        }
+        if(strcmp(input, "a\0") == 0) {
+            return ALL;
+        }
+        if(strcmp(input, "r\0") == 0) {
+            return REVERSE;
+        }
+        if(strcmp(input, "q\0") == 0) {
+            return QUIT;
+        }
+        if(strcmp(input, "c\0") == 0) {
+            return CLEAR;
+        }
+    }    
+    return FINISH;
+}
+
+int operations(char* input){
+    if(input) {
+        if(strcmp(input, "+\0") == 0) {
+            // ADDITION
+        }
+        if(strcmp(input, "-\0") == 0) {
+            // SUBTRACTION
+        }
+        if(strcmp(input, "*\0") == 0) {
+            // TIMES
+        }
+        if(strcmp(input, "/\0") == 0) {
+            // DIVISION
+        }
+        if(strcmp(input, "!\0") == 0) {
+            // FACTORIAL
+        }
+        if(strcmp(input, "^\0") == 0) {
+            // TO THE POWER OF...
+        }
+        if(strcmp(input, "%%\0") == 0) {
+            // REMAINDER
+        }
+    }
+    // DEFAULT ACTION
+}
 
 void initialize_Stack(Stack* stack) {
     stack->top = -1;
+    stack->size = 0;
 }
 
 void print_Top(Stack stack) {
@@ -62,8 +140,9 @@ void print_stack(Stack stack) {
         return;
     }
     for(int i = stack.top; i >= 0; i--) {
-        printf("%d \n", stack.data[i]);
+        printf("%d ", stack.data[stack.size - i - 1]);
     }
+    printf("\n");
 }
 
 bool addition(Stack* stack) {
@@ -102,7 +181,7 @@ bool times(Stack* stack) {
     return true;
 }
 
-bool addition(Stack* stack) {
+bool division(Stack* stack) {
     if(stack->size < 2) {
         fprintf(stderr, "Not Enough values for division \n");
         return false;
@@ -114,7 +193,7 @@ bool addition(Stack* stack) {
     return true;
 }
 
-bool remainder(Stack* stack) {
+bool remainderr(Stack* stack) {
     if(stack->size < 2) {
         fprintf(stderr, "Not Enough values for remainder \n");
         return false;
@@ -160,9 +239,45 @@ bool power(Stack* stack) {
     return true;
 }
 
-void free_stack(Stack* stack) {
-    if(stack->data != NULL) {
-        free(stack->data);
+int main(int argc, char* argv[]) {
+
+    /*char* input;
+    Stack* stack;
+    stack = (Stack*)malloc(sizeof(Stack) * MAX_SIZE);
+    if(!stack) {
+        fprintf(stderr, "Stack allocation failed \n");
+        exit(1);
     }
+    input = (char*)malloc(sizeof(char) * 64);
+    if(!input) {
+        fprintf(stderr, "input allocation failed \n");
+        exit(-1);
+    }
+    initialize_Stack(stack);
+    while(input) {
+        input = readline(">  ");
+    }*/
+    Stack* stack;
+    stack->data = (int*)malloc(sizeof(int) * MAX_SIZE);
+    if(!(stack->data)) {
+        fprintf(stderr, "Stack Allocation failed \n");
+        exit(-1);
+    }
+    char* input = (char*)malloc(sizeof(char) * 64);
+    if(!input) {
+        fprintf(stderr, "input allocation failed \n");
+        exit(-1);
+    }
+    initialize_Stack(stack);
+    while (input)
+    {
+        input = readline(">  ");
+        if(options(input) == NONE && operations(input) == NONE) {
+            // REQUIRED ANSWER
+        }
+    }
+    
+    free(stack->data);
     stack = NULL;
+    return 0;
 }

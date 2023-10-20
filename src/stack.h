@@ -1,5 +1,5 @@
-#ifndef __STACK_C__
-#define __STACK_C__
+#ifndef __STACK_H__
+#define __STACK_H__
 
 #define MAX_SIZE 64
 
@@ -49,7 +49,19 @@ int pop(Stack* stack);
  */
 bool isNumerical(char* str);
 
+/**
+ * @brief prints the whole stack
+ * 
+ * @param stack 
+ */
 void print_stack(Stack stack);
+
+/**
+ * @brief Frees a stack given as an argument
+ * 
+ * @param stack 
+ */
+void free_stack(Stack* stack);
 
 #endif
 
