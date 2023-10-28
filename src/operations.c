@@ -48,11 +48,11 @@ bool division(Stack* stack) {
         fprintf(stderr, "Not Enough values for division \n");
         return false;
     }
-    if(stack->data[stack->top - 1] = 0) {
+    if(stack->data[stack->top] == 0) {
         fprintf(stderr, "Division by zero ! \n");
         return false;
     }
-    int quotient = stack->data[stack->top] / stack->data[stack->top - 1];
+    int quotient = stack->data[stack->top - 1] / stack->data[stack->top];
     pop(stack);
     pop(stack);
     push(stack, quotient);
@@ -64,11 +64,11 @@ bool remainderr(Stack* stack) {
         fprintf(stderr, "Not Enough values for remainder \n");
         return false;
     }
-    if(stack->data[stack->top - 1]) {
+    if(stack->data[stack->top] == 0) {
         fprintf(stderr, "Not possible \n");
         return false;
     }
-    int remainder = stack->data[stack->top] % stack->data[stack->top - 1];
+    int remainder = stack->data[stack->top - 1] % stack->data[stack->top];
     pop(stack);
     pop(stack);
     push(stack, remainder);

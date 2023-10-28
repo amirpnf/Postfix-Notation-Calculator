@@ -10,19 +10,26 @@
 
 int main(int argc, char* argv[]) {
 
-    Stack* stack = (Stack*)malloc(sizeof(stack));
-    char* input = (char*)malloc(sizeof(char) * 64);
-    if(!input || !stack) {
-        fprintf(stderr, "input or stack allocation failed \n");
+    Stack* stack = (Stack*)malloc(sizeof(Stack));
+    stack->data = (int*)malloc(sizeof(int) * MAX_SIZE);
+    if (stack->data == NULL)
+    {
+        fprintf(stderr, "Stack allocation failed \n");
         exit(-1);
     }
-
+    initialize_Stack(stack);
+    char* input;
+    input = (char*)malloc(64);
+    if (!input)
+    {
+        fprintf(stderr, "String allocation failed \n");
+        exit(-1);
+    }
     input = readline(">  ");
     while(input != NULL) {
         cases(stack, input);
         input = readline(">  ");
     }
     free_stack(stack);
-    free(input);
     return 0;
-}
+}    
