@@ -15,9 +15,9 @@ $(EXE): $(REG)main.c $(OBJ)
 
 stack.o: $(REG)stack.c $(REG)stack.h 
 
-lines.o: $(REG)lines.c $(REG)lines.h $(REG)operations.h
+lines.o: $(REG)lines.c $(REG)lines.h $(REG)operations.h $(REG)stack.h
 
-operations.o : $(REG)operations.c $(REG)operations.h
+operations.o : $(REG)operations.c $(REG)operations.h $(REG)stack.h
 
 
 ${OBJ_DIR}%.o: $(REG)%.c

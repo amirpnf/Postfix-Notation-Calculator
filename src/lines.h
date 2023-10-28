@@ -1,17 +1,12 @@
 #ifndef __LINES_H__
 #define __LINES_H__
+#include "stack.h"
 
-typedef enum {
-    QUIT,
-    PRINT,
-    CLEAR,
-    ALL,
-    REVERSE,
-    FINISH,
-    NONE,
-} Response;
-
-int options(char* input);
-void line_parser(char* input);
+/**
+ * @brief manages different cases
+ * 
+ * @param input 
+ */
+void cases(Stack* stack, char* input);
 
 #endif

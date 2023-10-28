@@ -61,7 +61,7 @@ void cases(Stack* stack, char* input) {
             push(stack, atoi(token));
         } 
         if(strlen(token) == 1) {
-            switch (input[0])
+            switch (token[0])
             {
             case '+':
                 addition(stack);
@@ -138,15 +138,7 @@ int pop(Stack* stack) {
     }
 }
 
-void clear_stack(Stack* stack) {
-    if(stack->top == -1) {
-        fprintf(stderr, "Stack already empty \n");
-        return;
-    }
-    while(stack->size != 0) {
-        pop(stack);
-    }
-}
+
 
 bool is_number(char* str) {
     if(*str == '_') {
@@ -170,6 +162,16 @@ void print_stack(Stack stack) {
         printf("%d ", stack.data[stack.size - i - 1]);
     }
     printf("\n");
+}
+
+void clear_stack(Stack* stack) {
+    if(stack->top == -1) {
+        fprintf(stderr, "Stack already empty \n");
+        return;
+    }
+    while(stack->size != 0) {
+        pop(stack);
+    }
 }
 
 void reverse_stack(Stack* stack) {

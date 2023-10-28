@@ -5,25 +5,24 @@
 #include <readline/history.h>
 #include <stdbool.h>
 #include "stack.h"
-
+#include "lines.h"
 
 
 int main(int argc, char* argv[]) {
 
-    char* input;
-    Stack* stack;
-    stack = (Stack*)malloc(sizeof(Stack) * MAX_SIZE);
-    if(!stack) {
-        fprintf(stderr, "Stack allocation failed \n");
-        exit(1);
-    }
-    input = (char*)malloc(sizeof(char) * 64);
-    if(!input) {
-        fprintf(stderr, "input allocation failed \n");
+    Stack* stack = (Stack*)malloc(sizeof(stack));
+    char* input = (char*)malloc(sizeof(char) * 64);
+    if(!input || !stack) {
+        fprintf(stderr, "input or stack allocation failed \n");
         exit(-1);
     }
-    initialize_Stack(stack);
-    while(input) {
+
+    input = readline(">  ");
+    while(input != NULL) {
+        cases(stack, input);
         input = readline(">  ");
     }
+    free_stack(stack);
+    free(input);
+    return 0;
 }

@@ -4,7 +4,7 @@
 #define MAX_SIZE 64
 
 typedef struct stack {
-    long int data[MAX_SIZE];
+    int* data;
     int top;
     int size;
 } Stack;
@@ -47,7 +47,7 @@ int pop(Stack* stack);
  * @return true 
  * @return false 
  */
-bool isNumerical(char* str);
+bool is_number(char* str);
 
 /**
  * @brief prints the whole stack
@@ -55,6 +55,20 @@ bool isNumerical(char* str);
  * @param stack 
  */
 void print_stack(Stack stack);
+
+/** 
+ * @brief empties out a stack
+ * 
+ * @param stack 
+ */
+void clear_stack(Stack* stack);
+
+/**
+ * @brief reverses the order of the last two elements in a stack
+ * 
+ * @param stack 
+ */
+void reverse_stack(Stack* stack);
 
 /**
  * @brief Frees a stack given as an argument

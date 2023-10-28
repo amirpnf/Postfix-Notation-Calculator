@@ -5,34 +5,56 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "lines.h"
+#include "operations.h"
+#include "stack.h"
 
-int options(char* input) {
-    if(input) {
-        if(strcmp(input, "p\0") == 0) {
-            return PRINT;
-        }
-        if(strcmp(input, "a\0") == 0) {
-            return ALL;
-        }
-        if(strcmp(input, "r\0") == 0) {
-            return REVERSE;
-        }
-        if(strcmp(input, "q\0") == 0) {
-            return QUIT;
-        }
-        if(strcmp(input, "c\0") == 0) {
-            return CLEAR;
-        }
-    }    
-    return FINISH;
-}
-
-
-void line_parser(char* input) {
+void cases(Stack* stack, char* input) {
     char* token = strtok(input, " ");
     while(token != NULL) {
-        // REQUIRED RESPONSE
-        token = strtok(NULL, " ");
+        if(is_number(token)) {
+            push(stack, atoi(token));
+        } 
+        if(strlen(token) == 1) {
+            switch (token[0])
+            {
+            case '+':
+                addition(stack);
+                break;
+            case '-':
+                subtraction(stack);
+                break;
+            case '*':
+                times(stack);
+                break;
+            case '/':
+                division(stack);
+                break;
+            case '%':
+                remainderr(stack);
+                break;
+            case '^':
+                power(stack);
+                break;
+            case '!':
+                factorial(stack);
+                break;    
+            case 'a':
+                print_stack(*stack);
+                break;                        
+            case 'c':
+                clear_stack(stack);
+                break;
+            case 'p':
+                print_Top(*stack);
+                break;
+            case 'q':
+                exit(0);
+                break;
+            case 'r':
+                reverse_stack(stack);
+                break;              
+            }
+        }    
+    token = strtok(NULL, " ");    
     }
-}
-
+}    
