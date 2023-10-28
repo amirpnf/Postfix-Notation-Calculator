@@ -142,6 +142,9 @@ bool factorial(Stack* stack) {
         fprintf(stderr, "Not Enough Values for factorial \n");
         return false;
     }
+    if(stack->data[stack->top] < 0) {
+        return false;
+    }
     int fact = factorial_aux(stack->data[stack->top]);
     pop(stack);
     push(stack, fact);

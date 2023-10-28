@@ -9,6 +9,7 @@ typedef enum {
     REMAINDER,
     FACTORIAL,
     POWER,
+    NONE,
 } OPERATION;
 
 #endif

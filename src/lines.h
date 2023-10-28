@@ -8,6 +8,10 @@ typedef enum {
     ALL,
     REVERSE,
     FINISH,
+    NONE,
 } Response;
+
+int options(char* input);
+void line_parser(char* input);
 
 #endif

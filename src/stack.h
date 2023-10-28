@@ -4,7 +4,7 @@
 #define MAX_SIZE 64
 
 typedef struct stack {
-    int data[MAX_SIZE];
+    long int data[MAX_SIZE];
     int top;
     int size;
 } Stack;

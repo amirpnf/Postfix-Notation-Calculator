@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "lines.h"
@@ -24,5 +25,14 @@ int options(char* input) {
         }
     }    
     return FINISH;
+}
+
+
+void line_parser(char* input) {
+    char* token = strtok(input, " ");
+    while(token != NULL) {
+        // REQUIRED RESPONSE
+        token = strtok(NULL, " ");
+    }
 }
 

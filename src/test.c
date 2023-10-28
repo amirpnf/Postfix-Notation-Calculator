@@ -8,6 +8,9 @@
 
 #define MAX_SIZE 64
 
+
+
+
 typedef struct stack {
     int* data;
     int top;
@@ -22,7 +25,8 @@ typedef enum {
     REMAINDER,
     FACTORIAL,
     POWER,
-} OPERATION;
+    NONE_O,
+} Operation;
 
 typedef enum {
     QUIT,
@@ -30,57 +34,76 @@ typedef enum {
     CLEAR,
     ALL,
     REVERSE,
-    NONE,
+    NONE_R,
     FINISH,
 } Response;
 
-int options(char* input) {
-    if(input) {
-        if(strcmp(input, "p\0") == 0) {
-            return PRINT;
-        }
-        if(strcmp(input, "a\0") == 0) {
-            return ALL;
-        }
-        if(strcmp(input, "r\0") == 0) {
-            return REVERSE;
-        }
-        if(strcmp(input, "q\0") == 0) {
-            return QUIT;
-        }
-        if(strcmp(input, "c\0") == 0) {
-            return CLEAR;
-        }
-    }    
-    return FINISH;
-}
+bool addition(Stack* stack);
+bool subtraction(Stack* stack);
+bool times(Stack* stack);
+bool division(Stack* stack);
+bool remainderr(Stack* stack);
+int factorial_aux(int number);
+bool factorial(Stack* stack);
+bool power(Stack* stack);
+bool is_number(char* str);
+void push(Stack* stack, int number);
+void clear_stack(Stack* stack);
+void reverse_stack(Stack* stack);
+void print_stack(Stack stack);
+void print_Top(Stack stack);
+// -------------------------
 
-int operations(char* input){
-    if(input) {
-        if(strcmp(input, "+\0") == 0) {
-            // ADDITION
-        }
-        if(strcmp(input, "-\0") == 0) {
-            // SUBTRACTION
-        }
-        if(strcmp(input, "*\0") == 0) {
-            // TIMES
-        }
-        if(strcmp(input, "/\0") == 0) {
-            // DIVISION
-        }
-        if(strcmp(input, "!\0") == 0) {
-            // FACTORIAL
-        }
-        if(strcmp(input, "^\0") == 0) {
-            // TO THE POWER OF...
-        }
-        if(strcmp(input, "%%\0") == 0) {
-            // REMAINDER
-        }
+void cases(Stack* stack, char* input) {
+    char* token = strtok(input, " ");
+    while(token != NULL) {
+        if(is_number(token)) {
+            push(stack, atoi(token));
+        } 
+        if(strlen(token) == 1) {
+            switch (input[0])
+            {
+            case '+':
+                addition(stack);
+                break;
+            case '-':
+                subtraction(stack);
+                break;
+            case '*':
+                times(stack);
+                break;
+            case '/':
+                division(stack);
+                break;
+            case '%':
+                remainderr(stack);
+                break;
+            case '^':
+                power(stack);
+                break;
+            case '!':
+                factorial(stack);
+                break;    
+            case 'a':
+                print_stack(*stack);
+                break;                        
+            case 'c':
+                clear_stack(stack);
+                break;
+            case 'p':
+                print_Top(*stack);
+                break;
+            case 'q':
+                exit(0);
+                break;
+            case 'r':
+                reverse_stack(stack);
+                break;              
+            }
+        }    
+    token = strtok(NULL, " ");    
     }
-    // DEFAULT ACTION
-}
+}    
 
 void initialize_Stack(Stack* stack) {
     stack->top = -1;
@@ -115,22 +138,26 @@ int pop(Stack* stack) {
     }
 }
 
-bool isNumerical(char* str) {
-    if(str == NULL || *str == '\0') {
-        return false;
+void clear_stack(Stack* stack) {
+    if(stack->top == -1) {
+        fprintf(stderr, "Stack already empty \n");
+        return;
     }
-
-    int i = 0;
-    if(str[0] == '_') {
-        if(str[1] == '\0')
-            return false;
-        i = 1;    
+    while(stack->size != 0) {
+        pop(stack);
     }
+}
 
-    for(; str[i] != '\0'; i++) {
-        if(str[i] < '0' || str[i] > '9')
+bool is_number(char* str) {
+    if(*str == '_') {
+        str++;
+    }
+    while(*str) {
+        if(*str < '0' || *str > '9') {
             return false;
-    } 
+        }
+        str++;
+    }
     return true;
 }
 
@@ -143,6 +170,16 @@ void print_stack(Stack stack) {
         printf("%d ", stack.data[stack.size - i - 1]);
     }
     printf("\n");
+}
+
+void reverse_stack(Stack* stack) {
+    if(stack->size < 2) {
+        fprintf(stderr, "Not enough elements in stack \n");
+        return;
+    }
+    int tmp = stack->data[stack->top];
+    stack->data[stack->top] = stack->data[stack->top + 1];
+    stack->data[stack->top + 1] = tmp;
 }
 
 bool addition(Stack* stack) {
@@ -184,6 +221,10 @@ bool times(Stack* stack) {
 bool division(Stack* stack) {
     if(stack->size < 2) {
         fprintf(stderr, "Not Enough values for division \n");
+        return false;
+    }
+    if(stack->data[stack->top + 1] == 0) {
+        fprintf(stderr, "division by zero \n");
         return false;
     }
     int quotient = stack->data[stack->top] / stack->data[stack->top - 1];
@@ -239,45 +280,31 @@ bool power(Stack* stack) {
     return true;
 }
 
+
 int main(int argc, char* argv[]) {
 
-    /*char* input;
-    Stack* stack;
-    stack = (Stack*)malloc(sizeof(Stack) * MAX_SIZE);
-    if(!stack) {
-        fprintf(stderr, "Stack allocation failed \n");
-        exit(1);
-    }
-    input = (char*)malloc(sizeof(char) * 64);
-    if(!input) {
-        fprintf(stderr, "input allocation failed \n");
-        exit(-1);
-    }
-    initialize_Stack(stack);
-    while(input) {
-        input = readline(">  ");
-    }*/
-    Stack* stack;
+    Stack* stack = (Stack*)malloc(sizeof(Stack));
     stack->data = (int*)malloc(sizeof(int) * MAX_SIZE);
-    if(!(stack->data)) {
-        fprintf(stderr, "Stack Allocation failed \n");
-        exit(-1);
-    }
-    char* input = (char*)malloc(sizeof(char) * 64);
-    if(!input) {
-        fprintf(stderr, "input allocation failed \n");
+    if (stack->data == NULL)
+    {
+        fprintf(stderr, "Stack allocation failed \n");
         exit(-1);
     }
     initialize_Stack(stack);
-    while (input)
+    char* input;
+    input = (char*)malloc(64);
+    if (!input)
     {
-        input = readline(">  ");
-        if(options(input) == NONE && operations(input) == NONE) {
-            // REQUIRED ANSWER
-        }
+        fprintf(stderr, "String allocation failed \n");
+        exit(-1);
     }
-    
+    input = readline(">  ");
+    while(input != NULL) {
+        cases(stack, input);
+        input = readline(">  ");
+    }
     free(stack->data);
+    free(stack);
     stack = NULL;
     return 0;
-}
+}    
